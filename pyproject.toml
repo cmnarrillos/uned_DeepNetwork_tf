@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "deepnetwork"
+version = "0.1.0"
+description = ""
+authors = ["cmnarrillos <cmorenonarrillos@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.8,<3.10"
+tensorflow = "2.10"
+tensorflow-io-gcs-filesystem = ">=0.23,<0.32"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
