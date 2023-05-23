@@ -2,10 +2,11 @@ import datetime
 import os
 import tensorflow as tf
 from tensorflow.keras import layers, models
+from tensorflow.keras import regularizers
 from functions_deepnetwork import *
 
-# Set CPU as the device for TensorFlow
-os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
+# # Set CPU as the device for TensorFlow (uncomment if needed)
+# os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 
 # Identify the test (for saving results)
 current_time = datetime.datetime.now()
@@ -45,7 +46,7 @@ model = models.Sequential()
 model.add(layers.Flatten())
 
 # Add fully connected layer
-model.add(layers.Dense(100, activation='relu'))
+model.add(layers.Dense(100, activation='relu', kernel_regularizer=regularizers.l2(5.0/50000)))
 
 # Add softmax layer
 model.add(layers.Dense(10, activation='softmax'))
