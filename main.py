@@ -709,7 +709,7 @@ if False:
 # -----------------------------------------------------------------------------
 # # 9th network to train: 2 conv-pool + 3 FC layers with modified ReLU
 # # Expanding training data to 250.000. Include dropout
-if True:
+if False:
     n = expanded_train_labels.shape[0]
     # Initialize
     print('\n\n\n\n NEW CASE: Convolutional + Pool + '
@@ -774,7 +774,7 @@ if True:
 # -----------------------------------------------------------------------------
 # # 10h network to train: 2 conv-pool + 4 FC layers with modified ReLU
 # # Expanding training data to 250.000. Include dropout
-if True:
+if False:
     n = expanded_train_labels.shape[0]
     # Initialize
     print('\n\n\n\n NEW CASE: Convolutional + Pool + '
@@ -799,6 +799,77 @@ if True:
                       kernel_regularizer=regularizers.l2(lmbda/(2*n))),
         layers.MaxPooling2D(pool_size=(2, 2)),
         layers.Flatten(),
+        layers.Dropout(rate=dropout),
+        layers.Dense(units=100, activation=ReLU_mod,
+                     kernel_regularizer=regularizers.l2(lmbda/(2*n))),
+        layers.Dropout(rate=dropout),
+        layers.Dense(units=100, activation=ReLU_mod,
+                     kernel_regularizer=regularizers.l2(lmbda/(2*n))),
+        layers.Dropout(rate=dropout),
+        layers.Dense(units=100, activation=ReLU_mod,
+                     kernel_regularizer=regularizers.l2(lmbda/(2*n))),
+        layers.Dropout(rate=dropout),
+        layers.Dense(units=100, activation=ReLU_mod,
+                     kernel_regularizer=regularizers.l2(lmbda/(2*n))),
+        layers.Dense(10, activation='softmax')
+    ])
+
+    # Define optimizer and loss function
+    optimizer = tf.keras.optimizers.SGD(learning_rate=lr)
+    loss_fn = tf.keras.losses.SparseCategoricalCrossentropy()
+
+    # Compile the model
+    model.compile(optimizer=optimizer, loss=loss_fn, metrics=['accuracy'])
+
+    # Train the model
+    t_i = time.time()
+    model.fit(expanded_train_data, expanded_train_labels,
+              batch_size=mini_batch_size,
+              epochs=epochs, validation_data=(val_data, val_labels))
+    elapsed = time.time() - t_i
+
+    # Test the accuracy on test data
+    test_loss, test_accuracy = model.evaluate(test_data, test_labels)
+
+    print('Test Loss:', test_loss)
+    print('Test Accuracy:', test_accuracy)
+    print('Elapsed time: ' + str(elapsed) + ' s')
+    f.write('\nTest Loss: ' + str(test_loss))
+    f.write('\nTest Accuracy: ' + str(test_accuracy))
+    f.write('\nElapsed time: ' + str(elapsed) + ' s')
+
+
+# -----------------------------------------------------------------------------
+# # 11h network to train: 2 conv-pool + 5 FC layers with modified ReLU
+# # Expanding training data to 250.000. Include dropout
+if True:
+    n = expanded_train_labels.shape[0]
+    # Initialize
+    print('\n\n\n\n NEW CASE: Convolutional + Pool + '
+          'Convolutional + Pool + 5 FC Layers (ReLU_mod)')
+    print('Architecture: [784, 20x(24,24), 20x(12,12), '
+                           '100, 100, 100, 100, 100, 10]')
+    print('Expanded training data')
+    print('Dropout')
+    f.write('\n\n\n\n\n NEW CASE: Convolutional + Pool + '
+            'Convolutional + Pool + 5 FC Layers (ReLU_mod)')
+    f.write('\nArchitecture: [784, 20x(24,24), 20x(12,12), '
+                              '100, 100, 100, 100, 100, 10]')
+    f.write('\nExpanded training data')
+    f.write('\nDropout')
+    model = models.Sequential([
+        layers.Conv2D(filters=20, kernel_size=(5, 5),
+                      activation='relu',
+                      kernel_regularizer=regularizers.l2(lmbda/(2*n))),
+        layers.MaxPooling2D(pool_size=(2, 2)),
+        layers.Conv2D(filters=40, kernel_size=(5, 5),
+                      activation='relu',
+                      kernel_regularizer=regularizers.l2(lmbda/(2*n))),
+        layers.MaxPooling2D(pool_size=(2, 2)),
+        layers.Flatten(),
+        layers.Dropout(rate=dropout),
+        layers.Dense(units=100, activation=ReLU_mod,
+                     kernel_regularizer=regularizers.l2(lmbda/(2*n))),
         layers.Dropout(rate=dropout),
         layers.Dense(units=100, activation=ReLU_mod,
                      kernel_regularizer=regularizers.l2(lmbda/(2*n))),
