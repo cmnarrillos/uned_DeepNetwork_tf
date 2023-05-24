@@ -6,9 +6,10 @@ authors = ["cmnarrillos <cmorenonarrillos@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = ">=3.8,<3.10"
+python = ">=3.8,<3.9"
 tensorflow = "2.10"
 tensorflow-io-gcs-filesystem = ">=0.23,<0.32"
+matplotlib = "^3.7.1"
 
 
 [build-system]
