@@ -65,6 +65,9 @@ for root, dirs, files in os.walk(folder_path):
                     dpi=900, bbox_inches='tight')
 
         if test_to_analyze == '2023-05-24_03-51-19':
+            # Set the figure size
+            fig, ax = plt.subplots(figsize=(8, 6))
+            # Plotting
             for i in range(len(models[:-2])):
                 plt.plot(val_acc_np[i], label=models[i])
             plt.xlabel('Epochs')
@@ -73,11 +76,20 @@ for root, dirs, files in os.walk(folder_path):
             plt.legend()
 
             # Save the figure
-            plt.savefig('./tests/' + test_to_analyze + '/validation_acc_2.png',
+            plt.savefig('./tests/' + test_to_analyze +
+                        '/validation_acc_2.png',
                         dpi=900, bbox_inches='tight')
 
         # Close the figure (optional)
         plt.close()
+
+        # Save vars
+        np.save('./tests/' + test_to_analyze +
+                '/val_acc_np.npy', val_acc_np)
+        with open('./tests/' + test_to_analyze +
+                  '/models.txt', 'w') as f:
+            for string in models:
+                f.write(string + '\n')
 
 
 print('Postprocess Finished')
