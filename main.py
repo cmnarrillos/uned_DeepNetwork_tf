@@ -1,9 +1,11 @@
 import datetime
 import os
+import time
 import tensorflow as tf
 from tensorflow.keras import layers, models
 from tensorflow.keras import regularizers
-from functions_deepnetwork import *
+from functions_deepnetwork import load_data_shared
+from functions_deepnetwork import ReLU_mod
 
 # # Set CPU as the device for TensorFlow (uncomment if needed)
 # os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
@@ -11,6 +13,13 @@ from functions_deepnetwork import *
 # Identify the test (for saving results)
 current_time = datetime.datetime.now()
 id_test = current_time.strftime("%Y-%m-%d_%H-%M-%S")+'_deep'
+
+
+# Set default parameters for training all examples
+epochs = 5
+mini_batch_size = 1000
+lr = 0.1
+lmbda = 5.0
 
 # Load MNIST data
 training_data, validation_data, test_data = load_data_shared()
@@ -28,81 +37,363 @@ val_labels = tf.convert_to_tensor(tf.expand_dims(val_labels, axis=1))
 test_data = tf.convert_to_tensor(test_data.numpy().reshape(-1, 28, 28, 1))
 test_labels = tf.convert_to_tensor(tf.expand_dims(test_labels, axis=1))
 
-
-
+expanded_training_data, _, _ = load_data_shared(
+    './data/mnist_expanded.pkl.gz')
+(expanded_train_data, expanded_train_labels) = expanded_training_data
+expanded_train_data = tf.convert_to_tensor(
+    expanded_train_data.numpy().reshape(-1, 28, 28, 1))
+expanded_train_labels = tf.convert_to_tensor(
+    tf.expand_dims(expanded_train_labels, axis=1))
 
 
 # -----------------------------------------------------------------------------
 # # 1st network to train: 1 hidden layer with 100 neurons:
 if False:
+    n = train_labels.shape[0]
     # Initialize the neural network model
     print('\n\n\n\n NEW CASE: 1 FullyConnected Layer')
     print('Architecture: [784, 100, 10]')
     model = models.Sequential([
         layers.Flatten(),
         layers.Dense(100, activation='sigmoid',
-                     kernel_regularizer=regularizers.l2(5.0/50000)),
+                     kernel_regularizer=regularizers.l2(lmbda/(2*n))),
         layers.Dense(10, activation='softmax')
     ])
 
     # Define optimizer and loss function
-    optimizer = tf.keras.optimizers.SGD(learning_rate=0.25)
+    optimizer = tf.keras.optimizers.SGD(learning_rate=lr)
     loss_fn = tf.keras.losses.SparseCategoricalCrossentropy()
 
     # Compile the model
     model.compile(optimizer=optimizer, loss=loss_fn, metrics=['accuracy'])
 
     # Train the model
-    model.fit(train_data, train_labels, batch_size=10, epochs=60,
-              validation_data=(val_data, val_labels))
+    t_i = time.time()
+    model.fit(train_data, train_labels, batch_size=mini_batch_size,
+              epochs=epochs, validation_data=(val_data, val_labels))
+    elapsed = time.time() - t_i
 
     # Test the accuracy on test data
     test_loss, test_accuracy = model.evaluate(test_data, test_labels)
 
     print('Test Loss:', test_loss)
     print('Test Accuracy:', test_accuracy)
+    print('Elapsed time: ' + str(elapsed) + 's')
+
 
 # -----------------------------------------------------------------------------
 # # 2nd network to train: 1 conv-pool + 1 FC layer
-if True:
+if False:
+    n = train_labels.shape[0]
     # Initialize
     print('\n\n\n\n NEW CASE: Convolutional + Pool + FC Layer')
     print('Architecture: [784, 20x(24,24), 100, 10]')
     model = models.Sequential([
         layers.Conv2D(filters=20, kernel_size=(5, 5),
-                      activation='relu'),
+                      activation='relu',
+                      kernel_regularizer=regularizers.l2(lmbda/(2*n))),
         layers.MaxPooling2D(pool_size=(2, 2)),
         layers.Flatten(),
         layers.Dense(units=100, activation='sigmoid',
-                     kernel_regularizer=regularizers.l2(5.0/50000)),
+                     kernel_regularizer=regularizers.l2(lmbda/(2*n))),
         layers.Dense(10, activation='softmax')
     ])
 
     # Define optimizer and loss function
-    optimizer = tf.keras.optimizers.SGD(learning_rate=0.25)
+    optimizer = tf.keras.optimizers.SGD(learning_rate=lr)
     loss_fn = tf.keras.losses.SparseCategoricalCrossentropy()
 
     # Compile the model
     model.compile(optimizer=optimizer, loss=loss_fn, metrics=['accuracy'])
 
     # Train the model
-    model.fit(train_data, train_labels, batch_size=10, epochs=60,
-              validation_data=(val_data, val_labels))
+    t_i = time.time()
+    model.fit(train_data, train_labels, batch_size=mini_batch_size,
+              epochs=epochs, validation_data=(val_data, val_labels))
+    elapsed = time.time() - t_i
 
     # Test the accuracy on test data
     test_loss, test_accuracy = model.evaluate(test_data, test_labels)
 
     print('Test Loss:', test_loss)
     print('Test Accuracy:', test_accuracy)
+    print('Elapsed time: ' + str(elapsed) + 's')
 
 
-    # net = Network([
-    #     ConvPoolLayer(image_shape=(mini_batch_size, 1, 28, 28),
-    #                   filter_shape=(20, 1, 5, 5),
-    #                   poolsize=(2, 2)),
-    #     FullyConnectedLayer(n_in=20 * 12 * 12, n_out=100),
-    #     SoftmaxLayer(n_in=100, n_out=10)], mini_batch_size)
-    #
-    # # Train the network
-    # net.SGD(training_data, epochs, mini_batch_size, lr,
-    #             validation_data, test_data, lmbda=lmbda)
+# -----------------------------------------------------------------------------
+# # 3rd network to train: 2 conv-pool + 1 FC layer
+if False:
+    n = train_labels.shape[0]
+    # Initialize
+    print('\n\n\n\n NEW CASE: Convolutional + Pool + '
+                             'Convolutional + Pool + FC Layer')
+    print('Architecture: [784, 20x(24,24), 20x(12,12), 100, 10]')
+    model = models.Sequential([
+        layers.Conv2D(filters=20, kernel_size=(5, 5),
+                      activation='relu',
+                      kernel_regularizer=regularizers.l2(lmbda/(2*n))),
+        layers.MaxPooling2D(pool_size=(2, 2)),
+        layers.Conv2D(filters=40, kernel_size=(5, 5),
+                      activation='relu',
+                      kernel_regularizer=regularizers.l2(lmbda/(2*n))),
+        layers.MaxPooling2D(pool_size=(2, 2)),
+        layers.Flatten(),
+        layers.Dense(units=100, activation='sigmoid',
+                     kernel_regularizer=regularizers.l2(lmbda/(2*n))),
+        layers.Dense(10, activation='softmax')
+    ])
+
+    # Define optimizer and loss function
+    optimizer = tf.keras.optimizers.SGD(learning_rate=lr)
+    loss_fn = tf.keras.losses.SparseCategoricalCrossentropy()
+
+    # Compile the model
+    model.compile(optimizer=optimizer, loss=loss_fn, metrics=['accuracy'])
+
+    # Train the model
+    t_i = time.time()
+    model.fit(train_data, train_labels, batch_size=mini_batch_size,
+              epochs=epochs, validation_data=(val_data, val_labels))
+    elapsed = time.time() - t_i
+
+    # Test the accuracy on test data
+    test_loss, test_accuracy = model.evaluate(test_data, test_labels)
+
+    print('Test Loss:', test_loss)
+    print('Test Accuracy:', test_accuracy)
+    print('Elapsed time: ' + str(elapsed) + 's')
+
+
+# -----------------------------------------------------------------------------
+# # 4th network to train: 2 conv-pool + 1 FC layer with ReLU
+if False:
+    n = train_labels.shape[0]
+    # Initialize
+    print('\n\n\n\n NEW CASE: Convolutional + Pool + '
+                             'Convolutional + Pool + FC Layer (ReLU)')
+    print('Architecture: [784, 20x(24,24), 20x(12,12), 100, 10]')
+    model = models.Sequential([
+        layers.Conv2D(filters=20, kernel_size=(5, 5),
+                      activation='relu',
+                      kernel_regularizer=regularizers.l2(lmbda/(2*n))),
+        layers.MaxPooling2D(pool_size=(2, 2)),
+        layers.Conv2D(filters=40, kernel_size=(5, 5),
+                      activation='relu',
+                      kernel_regularizer=regularizers.l2(lmbda/(2*n))),
+        layers.MaxPooling2D(pool_size=(2, 2)),
+        layers.Flatten(),
+        layers.Dense(units=100, activation='relu',
+                     kernel_regularizer=regularizers.l2(lmbda/(2*n))),
+        layers.Dense(10, activation='softmax')
+    ])
+
+    # Define optimizer and loss function
+    optimizer = tf.keras.optimizers.SGD(learning_rate=lr)
+    loss_fn = tf.keras.losses.SparseCategoricalCrossentropy()
+
+    # Compile the model
+    model.compile(optimizer=optimizer, loss=loss_fn, metrics=['accuracy'])
+
+    # Train the model
+    t_i = time.time()
+    model.fit(train_data, train_labels, batch_size=mini_batch_size,
+              epochs=epochs, validation_data=(val_data, val_labels))
+    elapsed = time.time() - t_i
+
+    # Test the accuracy on test data
+    test_loss, test_accuracy = model.evaluate(test_data, test_labels)
+
+    print('Test Loss:', test_loss)
+    print('Test Accuracy:', test_accuracy)
+    print('Elapsed time: ' + str(elapsed) + 's')
+
+
+# -----------------------------------------------------------------------------
+# # 5th network to train: 2 conv-pool + 1 FC layer with modified ReLU
+if False:
+    n = train_labels.shape[0]
+    # Initialize
+    print('\n\n\n\n NEW CASE: Convolutional + Pool + '
+                             'Convolutional + Pool + FC Layer (ReLU_mod)')
+    print('Architecture: [784, 20x(24,24), 20x(12,12), 100, 10]')
+    model = models.Sequential([
+        layers.Conv2D(filters=20, kernel_size=(5, 5),
+                      activation='relu',
+                      kernel_regularizer=regularizers.l2(lmbda/(2*n))),
+        layers.MaxPooling2D(pool_size=(2, 2)),
+        layers.Conv2D(filters=40, kernel_size=(5, 5),
+                      activation='relu',
+                      kernel_regularizer=regularizers.l2(lmbda/(2*n))),
+        layers.MaxPooling2D(pool_size=(2, 2)),
+        layers.Flatten(),
+        layers.Dense(units=100, activation=ReLU_mod,
+                     kernel_regularizer=regularizers.l2(lmbda/(2*n))),
+        layers.Dense(10, activation='softmax')
+    ])
+
+    # Define optimizer and loss function
+    optimizer = tf.keras.optimizers.SGD(learning_rate=lr)
+    loss_fn = tf.keras.losses.SparseCategoricalCrossentropy()
+
+    # Compile the model
+    model.compile(optimizer=optimizer, loss=loss_fn, metrics=['accuracy'])
+
+    # Train the model
+    t_i = time.time()
+    model.fit(train_data, train_labels, batch_size=mini_batch_size,
+              epochs=epochs, validation_data=(val_data, val_labels))
+    elapsed = time.time() - t_i
+
+    # Test the accuracy on test data
+    test_loss, test_accuracy = model.evaluate(test_data, test_labels)
+
+    print('Test Loss:', test_loss)
+    print('Test Accuracy:', test_accuracy)
+    print('Elapsed time: ' + str(elapsed) + 's')
+
+
+# -----------------------------------------------------------------------------
+# # 6th network to train: 2 conv-pool + 1 FC layer with modified ReLU
+# # Expanding training data to 250.000
+if False:
+    n = expanded_train_labels.shape[0]
+    # Initialize
+    print('\n\n\n\n NEW CASE: Convolutional + Pool + '
+                             'Convolutional + Pool + FC Layer')
+    print('Architecture: [784, 20x(24,24), 20x(12,12), 100, 10]')
+    print('Expanded training data')
+    model = models.Sequential([
+        layers.Conv2D(filters=20, kernel_size=(5, 5),
+                      activation='relu',
+                      kernel_regularizer=regularizers.l2(lmbda/(2*n))),
+        layers.MaxPooling2D(pool_size=(2, 2)),
+        layers.Conv2D(filters=40, kernel_size=(5, 5),
+                      activation='relu',
+                      kernel_regularizer=regularizers.l2(lmbda/(2*n))),
+        layers.MaxPooling2D(pool_size=(2, 2)),
+        layers.Flatten(),
+        layers.Dense(units=100, activation=ReLU_mod,
+                     kernel_regularizer=regularizers.l2(lmbda/(2*n))),
+        layers.Dense(10, activation='softmax')
+    ])
+
+    # Define optimizer and loss function
+    optimizer = tf.keras.optimizers.SGD(learning_rate=lr)
+    loss_fn = tf.keras.losses.SparseCategoricalCrossentropy()
+
+    # Compile the model
+    model.compile(optimizer=optimizer, loss=loss_fn, metrics=['accuracy'])
+
+    # Train the model
+    t_i = time.time()
+    model.fit(expanded_train_data, expanded_train_labels,
+              batch_size=mini_batch_size,
+              epochs=epochs, validation_data=(val_data, val_labels))
+    elapsed = time.time() - t_i
+
+    # Test the accuracy on test data
+    test_loss, test_accuracy = model.evaluate(test_data, test_labels)
+
+    print('Test Loss:', test_loss)
+    print('Test Accuracy:', test_accuracy)
+    print('Elapsed time: ' + str(elapsed) + 's')
+
+
+# -----------------------------------------------------------------------------
+# # 7th network to train: 2 conv-pool + 2 FC layers with modified ReLU
+# # Expanding training data to 250.000
+if False:
+    n = expanded_train_labels.shape[0]
+    # Initialize
+    print('\n\n\n\n NEW CASE: Convolutional + Pool + '
+          'Convolutional + Pool + 2 FC Layers')
+    print('Architecture: [784, 20x(24,24), 20x(12,12), 100, 100, 10]')
+    print('Expanded training data')
+    model = models.Sequential([
+        layers.Conv2D(filters=20, kernel_size=(5, 5),
+                      activation='relu',
+                      kernel_regularizer=regularizers.l2(lmbda/(2*n))),
+        layers.MaxPooling2D(pool_size=(2, 2)),
+        layers.Conv2D(filters=40, kernel_size=(5, 5),
+                      activation='relu',
+                      kernel_regularizer=regularizers.l2(lmbda/(2*n))),
+        layers.MaxPooling2D(pool_size=(2, 2)),
+        layers.Flatten(),
+        layers.Dense(units=100, activation=ReLU_mod,
+                     kernel_regularizer=regularizers.l2(lmbda/(2*n))),
+        layers.Dense(units=100, activation=ReLU_mod,
+                     kernel_regularizer=regularizers.l2(lmbda/(2*n))),
+        layers.Dense(10, activation='softmax')
+    ])
+
+    # Define optimizer and loss function
+    optimizer = tf.keras.optimizers.SGD(learning_rate=lr)
+    loss_fn = tf.keras.losses.SparseCategoricalCrossentropy()
+
+    # Compile the model
+    model.compile(optimizer=optimizer, loss=loss_fn, metrics=['accuracy'])
+
+    # Train the model
+    t_i = time.time()
+    model.fit(expanded_train_data, expanded_train_labels,
+              batch_size=mini_batch_size,
+              epochs=epochs, validation_data=(val_data, val_labels))
+    elapsed = time.time() - t_i
+
+    # Test the accuracy on test data
+    test_loss, test_accuracy = model.evaluate(test_data, test_labels)
+
+    print('Test Loss:', test_loss)
+    print('Test Accuracy:', test_accuracy)
+    print('Elapsed time: ' + str(elapsed) + 's')
+
+
+# -----------------------------------------------------------------------------
+# # 8th network to train: 2 conv-pool + 2 FC layers with modified ReLU
+# # Expanding training data to 250.000. Include dropout
+if True:
+    n = expanded_train_labels.shape[0]
+    # Initialize
+    print('\n\n\n\n NEW CASE: Convolutional + Pool + '
+          'Convolutional + Pool + 2 FC Layers')
+    print('Architecture: [784, 20x(24,24), 20x(12,12), 100, 100, 10]')
+    print('Expanded training data')
+    model = models.Sequential([
+        layers.Conv2D(filters=20, kernel_size=(5, 5),
+                      activation='relu',
+                      kernel_regularizer=regularizers.l2(lmbda/(2*n))),
+        layers.MaxPooling2D(pool_size=(2, 2)),
+        layers.Conv2D(filters=40, kernel_size=(5, 5),
+                      activation='relu',
+                      kernel_regularizer=regularizers.l2(lmbda/(2*n))),
+        layers.MaxPooling2D(pool_size=(2, 2)),
+        layers.Flatten(),
+        layers.Dropout(rate=0.5),
+        layers.Dense(units=100, activation=ReLU_mod,
+                     kernel_regularizer=regularizers.l2(lmbda/(2*n))),
+        layers.Dropout(rate=0.5),
+        layers.Dense(units=100, activation=ReLU_mod,
+                     kernel_regularizer=regularizers.l2(lmbda/(2*n))),
+        layers.Dense(10, activation='softmax')
+    ])
+
+    # Define optimizer and loss function
+    optimizer = tf.keras.optimizers.SGD(learning_rate=lr)
+    loss_fn = tf.keras.losses.SparseCategoricalCrossentropy()
+
+    # Compile the model
+    model.compile(optimizer=optimizer, loss=loss_fn, metrics=['accuracy'])
+
+    # Train the model
+    t_i = time.time()
+    model.fit(expanded_train_data, expanded_train_labels,
+              batch_size=mini_batch_size,
+              epochs=epochs, validation_data=(val_data, val_labels))
+    elapsed = time.time() - t_i
+
+    # Test the accuracy on test data
+    test_loss, test_accuracy = model.evaluate(test_data, test_labels)
+
+    print('Test Loss:', test_loss)
+    print('Test Accuracy:', test_accuracy)
+    print('Elapsed time: ' + str(elapsed) + 's')

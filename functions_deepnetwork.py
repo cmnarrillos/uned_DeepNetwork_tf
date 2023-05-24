@@ -15,3 +15,7 @@ def load_data_shared(filename="./data/mnist.pkl.gz"):
             np.asarray(data[1], dtype=np.int32), trainable=False)
         return shared_x, tf.cast(shared_y, tf.int32)
     return [shared(training_data), shared(validation_data), shared(test_data)]
+
+# User-defined activation function
+def ReLU_mod(x):
+    return tf.maximum(x/1000, x)  # Example: Squaring the input
