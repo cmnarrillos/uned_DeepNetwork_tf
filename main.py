@@ -461,3 +461,5 @@ if True:
 f.close()
 try:
     shutil.copy('./console/log.txt', './tests/' + id_test + '/console_log.txt')
+except:
+    pass
