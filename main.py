@@ -20,16 +20,18 @@ if not os.path.exists('./tests/' + id_test):
 f = open('./tests/' + id_test + '/register.txt', 'w', newline='\r\n')
 
 # Set default parameters for training all examples
-epochs = 60
-mini_batch_size = 10
+epochs = 20
+mini_batch_size = 100
 lr = 0.1
 lmbda = 5.0
+dropout = 0.2
 
 f.write('\nGENERAL SETTINGS')
 f.write('\nepochs: ' + str(epochs))
 f.write('\nmini_batch_size: ' + str(mini_batch_size))
 f.write('\nlr: ' + str(lr))
 f.write('\nlmbda: ' + str(lmbda))
+f.write('\ndropout: ' + str(dropout))
 
 # Load MNIST data
 training_data, validation_data, test_data = load_data_shared()
@@ -58,7 +60,7 @@ expanded_train_labels = tf.convert_to_tensor(
 
 # -----------------------------------------------------------------------------
 # # 1st network to train: 1 hidden layer with 100 neurons:
-if True:
+if False:
     n = train_labels.shape[0]
     # Initialize the neural network model
     print('\n\n\n\n NEW CASE: 1 FullyConnected Layer')
@@ -98,7 +100,7 @@ if True:
 
 # -----------------------------------------------------------------------------
 # # 2nd network to train: 1 conv-pool + 1 FC layer
-if True:
+if False:
     n = train_labels.shape[0]
     # Initialize
     print('\n\n\n\n NEW CASE: Convolutional + Pool + FC Layer')
@@ -142,14 +144,14 @@ if True:
 
 # -----------------------------------------------------------------------------
 # # 3rd network to train: 2 conv-pool + 1 FC layer
-if True:
+if False:
     n = train_labels.shape[0]
     # Initialize
     print('\n\n\n\n NEW CASE: Convolutional + Pool + '
-                             'Convolutional + Pool + FC Layer')
+          'Convolutional + Pool + FC Layer')
     print('Architecture: [784, 20x(24,24), 20x(12,12), 100, 10]')
     f.write('\n\n\n\n\n NEW CASE: Convolutional + Pool + '
-                             'Convolutional + Pool + FC Layer')
+            'Convolutional + Pool + FC Layer')
     f.write('\nArchitecture: [784, 20x(24,24), 20x(12,12), 100, 10]')
     model = models.Sequential([
         layers.Conv2D(filters=20, kernel_size=(5, 5),
@@ -192,14 +194,14 @@ if True:
 
 # -----------------------------------------------------------------------------
 # # 4th network to train: 2 conv-pool + 1 FC layer with ReLU
-if True:
+if False:
     n = train_labels.shape[0]
     # Initialize
     print('\n\n\n\n NEW CASE: Convolutional + Pool + '
-                             'Convolutional + Pool + FC Layer (ReLU)')
+          'Convolutional + Pool + FC Layer (ReLU)')
     print('Architecture: [784, 20x(24,24), 20x(12,12), 100, 10]')
     f.write('\n\n\n\n\n NEW CASE: Convolutional + Pool + '
-                             'Convolutional + Pool + FC Layer (ReLU)')
+            'Convolutional + Pool + FC Layer (ReLU)')
     f.write('\nArchitecture: [784, 20x(24,24), 20x(12,12), 100, 10]')
     model = models.Sequential([
         layers.Conv2D(filters=20, kernel_size=(5, 5),
@@ -242,14 +244,14 @@ if True:
 
 # -----------------------------------------------------------------------------
 # # 5th network to train: 2 conv-pool + 1 FC layer with modified ReLU
-if True:
+if False:
     n = train_labels.shape[0]
     # Initialize
     print('\n\n\n\n NEW CASE: Convolutional + Pool + '
-                             'Convolutional + Pool + FC Layer (ReLU_mod)')
+          'Convolutional + Pool + FC Layer (ReLU_mod)')
     print('Architecture: [784, 20x(24,24), 20x(12,12), 100, 10]')
     f.write('\n\n\n\n\n NEW CASE: Convolutional + Pool + '
-                             'Convolutional + Pool + FC Layer (ReLU_mod)')
+            'Convolutional + Pool + FC Layer (ReLU_mod)')
     f.write('\nArchitecture: [784, 20x(24,24), 20x(12,12), 100, 10]')
     model = models.Sequential([
         layers.Conv2D(filters=20, kernel_size=(5, 5),
@@ -293,15 +295,15 @@ if True:
 # -----------------------------------------------------------------------------
 # # 6th network to train: 2 conv-pool + 1 FC layer with modified ReLU
 # # Expanding training data to 250.000
-if True:
+if False:
     n = expanded_train_labels.shape[0]
     # Initialize
     print('\n\n\n\n NEW CASE: Convolutional + Pool + '
-                             'Convolutional + Pool + FC Layer')
+          'Convolutional + Pool + FC Layer')
     print('Architecture: [784, 20x(24,24), 20x(12,12), 100, 10]')
     print('Expanded training data')
     f.write('\n\n\n\n\n NEW CASE: Convolutional + Pool + '
-                             'Convolutional + Pool + FC Layer')
+            'Convolutional + Pool + FC Layer')
     f.write('\nArchitecture: [784, 20x(24,24), 20x(12,12), 100, 10]')
     f.write('\nExpanded training data')
     model = models.Sequential([
@@ -345,18 +347,136 @@ if True:
 
 
 # -----------------------------------------------------------------------------
-# # 7th network to train: 2 conv-pool + 2 FC layers with modified ReLU
+# # 7.1th network to train: 2 conv-pool + 2 FC layers with sigmoid
 # # Expanding training data to 250.000
-if True:
+if False:
     n = expanded_train_labels.shape[0]
     # Initialize
     print('\n\n\n\n NEW CASE: Convolutional + Pool + '
-          'Convolutional + Pool + 2 FC Layers')
-    print('Architecture: [784, 20x(24,24), 20x(12,12), 100, 100, 10]')
+          'Convolutional + Pool + 2 FC Layers (sigmoid)')
+    print('Architecture: [784, 20x(24,24), 20x(12,12), '
+                                         '100, 100, 10]')
     print('Expanded training data')
     f.write('\n\n\n\n\n NEW CASE: Convolutional + Pool + '
-           'Convolutional + Pool + 2 FC Layers')
-    f.write('\nArchitecture: [784, 20x(24,24), 20x(12,12), 100, 100, 10]')
+            'Convolutional + Pool + 2 FC Layers (sigmoid)')
+    f.write('\nArchitecture: [784, 20x(24,24), 20x(12,12), '
+                                             '100, 100, 10]')
+    f.write('\nExpanded training data')
+    model = models.Sequential([
+        layers.Conv2D(filters=20, kernel_size=(5, 5),
+                      activation='relu',
+                      kernel_regularizer=regularizers.l2(lmbda/(2*n))),
+        layers.MaxPooling2D(pool_size=(2, 2)),
+        layers.Conv2D(filters=40, kernel_size=(5, 5),
+                      activation='relu',
+                      kernel_regularizer=regularizers.l2(lmbda/(2*n))),
+        layers.MaxPooling2D(pool_size=(2, 2)),
+        layers.Flatten(),
+        layers.Dense(units=100, activation='sigmoid',
+                     kernel_regularizer=regularizers.l2(lmbda/(2*n))),
+        layers.Dense(units=100, activation='sigmoid',
+                     kernel_regularizer=regularizers.l2(lmbda/(2*n))),
+        layers.Dense(10, activation='softmax')
+    ])
+
+    # Define optimizer and loss function
+    optimizer = tf.keras.optimizers.SGD(learning_rate=lr)
+    loss_fn = tf.keras.losses.SparseCategoricalCrossentropy()
+
+    # Compile the model
+    model.compile(optimizer=optimizer, loss=loss_fn, metrics=['accuracy'])
+
+    # Train the model
+    t_i = time.time()
+    model.fit(expanded_train_data, expanded_train_labels,
+              batch_size=mini_batch_size,
+              epochs=epochs, validation_data=(val_data, val_labels))
+    elapsed = time.time() - t_i
+
+    # Test the accuracy on test data
+    test_loss, test_accuracy = model.evaluate(test_data, test_labels)
+
+    print('Test Loss:', test_loss)
+    print('Test Accuracy:', test_accuracy)
+    print('Elapsed time: ' + str(elapsed) + ' s')
+    f.write('\nTest Loss: ' + str(test_loss))
+    f.write('\nTest Accuracy: ' + str(test_accuracy))
+    f.write('\nElapsed time: ' + str(elapsed) + ' s')
+
+
+# -----------------------------------------------------------------------------
+# # 7.2th network to train: 2 conv-pool + 2 FC layers with ReLU
+# # Expanding training data to 250.000
+if False:
+    n = expanded_train_labels.shape[0]
+    # Initialize
+    print('\n\n\n\n NEW CASE: Convolutional + Pool + '
+          'Convolutional + Pool + 2 FC Layers (ReLU)')
+    print('Architecture: [784, 20x(24,24), 20x(12,12), '
+                                         '100, 100, 10]')
+    print('Expanded training data')
+    f.write('\n\n\n\n\n NEW CASE: Convolutional + Pool + '
+            'Convolutional + Pool + 2 FC Layers (ReLU)')
+    f.write('\nArchitecture: [784, 20x(24,24), 20x(12,12), '
+                                             '100, 100, 10]')
+    f.write('\nExpanded training data')
+    model = models.Sequential([
+        layers.Conv2D(filters=20, kernel_size=(5, 5),
+                      activation='relu',
+                      kernel_regularizer=regularizers.l2(lmbda/(2*n))),
+        layers.MaxPooling2D(pool_size=(2, 2)),
+        layers.Conv2D(filters=40, kernel_size=(5, 5),
+                      activation='relu',
+                      kernel_regularizer=regularizers.l2(lmbda/(2*n))),
+        layers.MaxPooling2D(pool_size=(2, 2)),
+        layers.Flatten(),
+        layers.Dense(units=100, activation='relu',
+                     kernel_regularizer=regularizers.l2(lmbda/(2*n))),
+        layers.Dense(units=100, activation='relu',
+                     kernel_regularizer=regularizers.l2(lmbda/(2*n))),
+        layers.Dense(10, activation='softmax')
+    ])
+
+    # Define optimizer and loss function
+    optimizer = tf.keras.optimizers.SGD(learning_rate=lr)
+    loss_fn = tf.keras.losses.SparseCategoricalCrossentropy()
+
+    # Compile the model
+    model.compile(optimizer=optimizer, loss=loss_fn, metrics=['accuracy'])
+
+    # Train the model
+    t_i = time.time()
+    model.fit(expanded_train_data, expanded_train_labels,
+              batch_size=mini_batch_size,
+              epochs=epochs, validation_data=(val_data, val_labels))
+    elapsed = time.time() - t_i
+
+    # Test the accuracy on test data
+    test_loss, test_accuracy = model.evaluate(test_data, test_labels)
+
+    print('Test Loss:', test_loss)
+    print('Test Accuracy:', test_accuracy)
+    print('Elapsed time: ' + str(elapsed) + ' s')
+    f.write('\nTest Loss: ' + str(test_loss))
+    f.write('\nTest Accuracy: ' + str(test_accuracy))
+    f.write('\nElapsed time: ' + str(elapsed) + ' s')
+
+
+# -----------------------------------------------------------------------------
+# # 7.3th network to train: 2 conv-pool + 2 FC layers with modified ReLU
+# # Expanding training data to 250.000
+if False:
+    n = expanded_train_labels.shape[0]
+    # Initialize
+    print('\n\n\n\n NEW CASE: Convolutional + Pool + '
+          'Convolutional + Pool + 2 FC Layers (ReLU_mod)')
+    print('Architecture: [784, 20x(24,24), 20x(12,12), '
+                                          '100, 100, 10]')
+    print('Expanded training data')
+    f.write('\n\n\n\n\n NEW CASE: Convolutional + Pool + '
+            'Convolutional + Pool + 2 FC Layers (ReLU_mod)')
+    f.write('\nArchitecture: [784, 20x(24,24), 20x(12,12), '
+                                            '100, 100, 10]')
     f.write('\nExpanded training data')
     model = models.Sequential([
         layers.Conv2D(filters=20, kernel_size=(5, 5),
@@ -401,19 +521,23 @@ if True:
 
 
 # -----------------------------------------------------------------------------
-# # 8th network to train: 2 conv-pool + 2 FC layers with modified ReLU
+# # 8.1th network to train: 2 conv-pool + 2 FC layers with sigmoid
 # # Expanding training data to 250.000. Include dropout
-if True:
+if False:
     n = expanded_train_labels.shape[0]
     # Initialize
     print('\n\n\n\n NEW CASE: Convolutional + Pool + '
-          'Convolutional + Pool + 2 FC Layers')
-    print('Architecture: [784, 20x(24,24), 20x(12,12), 100, 100, 10]')
+          'Convolutional + Pool + 2 FC Layers (ReLU_mod)')
+    print('Architecture: [784, 20x(24,24), 20x(12,12), '
+                                          '100, 100, 10]')
     print('Expanded training data')
+    print('Dropout')
     f.write('\n\n\n\n\n NEW CASE: Convolutional + Pool + '
-            'Convolutional + Pool + 2 FC Layers')
-    f.write('\nArchitecture: [784, 20x(24,24), 20x(12,12), 100, 100, 10]')
+            'Convolutional + Pool + 2 FC Layers (ReLU_mod)')
+    f.write('\nArchitecture: [784, 20x(24,24), 20x(12,12), '
+                                            '100, 100, 10]')
     f.write('\nExpanded training data')
+    f.write('\nDropout')
     model = models.Sequential([
         layers.Conv2D(filters=20, kernel_size=(5, 5),
                       activation='relu',
@@ -424,10 +548,267 @@ if True:
                       kernel_regularizer=regularizers.l2(lmbda/(2*n))),
         layers.MaxPooling2D(pool_size=(2, 2)),
         layers.Flatten(),
-        layers.Dropout(rate=0.5),
+        layers.Dropout(rate=dropout),
+        layers.Dense(units=100, activation='sigmoid',
+                     kernel_regularizer=regularizers.l2(lmbda/(2*n))),
+        layers.Dropout(rate=dropout),
+        layers.Dense(units=100, activation='sigmoid',
+                     kernel_regularizer=regularizers.l2(lmbda/(2*n))),
+        layers.Dense(10, activation='softmax')
+    ])
+
+    # Define optimizer and loss function
+    optimizer = tf.keras.optimizers.SGD(learning_rate=lr)
+    loss_fn = tf.keras.losses.SparseCategoricalCrossentropy()
+
+    # Compile the model
+    model.compile(optimizer=optimizer, loss=loss_fn, metrics=['accuracy'])
+
+    # Train the model
+    t_i = time.time()
+    model.fit(expanded_train_data, expanded_train_labels,
+              batch_size=mini_batch_size,
+              epochs=epochs, validation_data=(val_data, val_labels))
+    elapsed = time.time() - t_i
+
+    # Test the accuracy on test data
+    test_loss, test_accuracy = model.evaluate(test_data, test_labels)
+
+    print('Test Loss:', test_loss)
+    print('Test Accuracy:', test_accuracy)
+    print('Elapsed time: ' + str(elapsed) + ' s')
+    f.write('\nTest Loss: ' + str(test_loss))
+    f.write('\nTest Accuracy: ' + str(test_accuracy))
+    f.write('\nElapsed time: ' + str(elapsed) + ' s')
+
+
+# -----------------------------------------------------------------------------
+# # 8.2th network to train: 2 conv-pool + 2 FC layers with ReLU
+# # Expanding training data to 250.000. Include dropout
+if False:
+    n = expanded_train_labels.shape[0]
+    # Initialize
+    print('\n\n\n\n NEW CASE: Convolutional + Pool + '
+          'Convolutional + Pool + 2 FC Layers (ReLU)')
+    print('Architecture: [784, 20x(24,24), 20x(12,12), '
+                                         '100, 100, 10]')
+    print('Expanded training data')
+    print('Dropout')
+    f.write('\n\n\n\n\n NEW CASE: Convolutional + Pool + '
+            'Convolutional + Pool + 2 FC Layers (ReLU)')
+    f.write('\nArchitecture: [784, 20x(24,24), 20x(12,12), '
+                                            '100, 100, 10]')
+    f.write('\nExpanded training data')
+    f.write('\nDropout')
+    model = models.Sequential([
+        layers.Conv2D(filters=20, kernel_size=(5, 5),
+                      activation='relu',
+                      kernel_regularizer=regularizers.l2(lmbda/(2*n))),
+        layers.MaxPooling2D(pool_size=(2, 2)),
+        layers.Conv2D(filters=40, kernel_size=(5, 5),
+                      activation='relu',
+                      kernel_regularizer=regularizers.l2(lmbda/(2*n))),
+        layers.MaxPooling2D(pool_size=(2, 2)),
+        layers.Flatten(),
+        layers.Dropout(rate=dropout),
+        layers.Dense(units=100, activation='relu',
+                     kernel_regularizer=regularizers.l2(lmbda/(2*n))),
+        layers.Dropout(rate=dropout),
+        layers.Dense(units=100, activation='relu',
+                     kernel_regularizer=regularizers.l2(lmbda/(2*n))),
+        layers.Dense(10, activation='softmax')
+    ])
+
+    # Define optimizer and loss function
+    optimizer = tf.keras.optimizers.SGD(learning_rate=lr)
+    loss_fn = tf.keras.losses.SparseCategoricalCrossentropy()
+
+    # Compile the model
+    model.compile(optimizer=optimizer, loss=loss_fn, metrics=['accuracy'])
+
+    # Train the model
+    t_i = time.time()
+    model.fit(expanded_train_data, expanded_train_labels,
+              batch_size=mini_batch_size,
+              epochs=epochs, validation_data=(val_data, val_labels))
+    elapsed = time.time() - t_i
+
+    # Test the accuracy on test data
+    test_loss, test_accuracy = model.evaluate(test_data, test_labels)
+
+    print('Test Loss:', test_loss)
+    print('Test Accuracy:', test_accuracy)
+    print('Elapsed time: ' + str(elapsed) + ' s')
+    f.write('\nTest Loss: ' + str(test_loss))
+    f.write('\nTest Accuracy: ' + str(test_accuracy))
+    f.write('\nElapsed time: ' + str(elapsed) + ' s')
+
+
+# -----------------------------------------------------------------------------
+# # 8.3th network to train: 2 conv-pool + 2 FC layers with modified ReLU
+# # Expanding training data to 250.000. Include dropout
+if False:
+    n = expanded_train_labels.shape[0]
+    # Initialize
+    print('\n\n\n\n NEW CASE: Convolutional + Pool + '
+          'Convolutional + Pool + 2 FC Layers (ReLU_mod)')
+    print('Architecture: [784, 20x(24,24), 20x(12,12), '
+                                          '100, 100, 10]')
+    print('Expanded training data')
+    print('Dropout')
+    f.write('\n\n\n\n\n NEW CASE: Convolutional + Pool + '
+            'Convolutional + Pool + 2 FC Layers (ReLU_mod)')
+    f.write('\nArchitecture: [784, 20x(24,24), 20x(12,12), '
+                                            '100, 100, 10]')
+    f.write('\nExpanded training data')
+    f.write('\nDropout')
+    model = models.Sequential([
+        layers.Conv2D(filters=20, kernel_size=(5, 5),
+                      activation='relu',
+                      kernel_regularizer=regularizers.l2(lmbda/(2*n))),
+        layers.MaxPooling2D(pool_size=(2, 2)),
+        layers.Conv2D(filters=40, kernel_size=(5, 5),
+                      activation='relu',
+                      kernel_regularizer=regularizers.l2(lmbda/(2*n))),
+        layers.MaxPooling2D(pool_size=(2, 2)),
+        layers.Flatten(),
+        layers.Dropout(rate=dropout),
         layers.Dense(units=100, activation=ReLU_mod,
                      kernel_regularizer=regularizers.l2(lmbda/(2*n))),
-        layers.Dropout(rate=0.5),
+        layers.Dropout(rate=dropout),
+        layers.Dense(units=100, activation=ReLU_mod,
+                     kernel_regularizer=regularizers.l2(lmbda/(2*n))),
+        layers.Dense(10, activation='softmax')
+    ])
+
+    # Define optimizer and loss function
+    optimizer = tf.keras.optimizers.SGD(learning_rate=lr)
+    loss_fn = tf.keras.losses.SparseCategoricalCrossentropy()
+
+    # Compile the model
+    model.compile(optimizer=optimizer, loss=loss_fn, metrics=['accuracy'])
+
+    # Train the model
+    t_i = time.time()
+    model.fit(expanded_train_data, expanded_train_labels,
+              batch_size=mini_batch_size,
+              epochs=epochs, validation_data=(val_data, val_labels))
+    elapsed = time.time() - t_i
+
+    # Test the accuracy on test data
+    test_loss, test_accuracy = model.evaluate(test_data, test_labels)
+
+    print('Test Loss:', test_loss)
+    print('Test Accuracy:', test_accuracy)
+    print('Elapsed time: ' + str(elapsed) + ' s')
+    f.write('\nTest Loss: ' + str(test_loss))
+    f.write('\nTest Accuracy: ' + str(test_accuracy))
+    f.write('\nElapsed time: ' + str(elapsed) + ' s')
+
+
+# -----------------------------------------------------------------------------
+# # 9th network to train: 2 conv-pool + 3 FC layers with modified ReLU
+# # Expanding training data to 250.000. Include dropout
+if True:
+    n = expanded_train_labels.shape[0]
+    # Initialize
+    print('\n\n\n\n NEW CASE: Convolutional + Pool + '
+          'Convolutional + Pool + 3 FC Layers (ReLU_mod)')
+    print('Architecture: [784, 20x(24,24), 20x(12,12), '
+                                     '100, 100, 100, 10]')
+    print('Expanded training data')
+    print('Dropout')
+    f.write('\n\n\n\n\n NEW CASE: Convolutional + Pool + '
+            'Convolutional + Pool + 3 FC Layers (ReLU_mod)')
+    f.write('\nArchitecture: [784, 20x(24,24), 20x(12,12), '
+                                       '100, 100, 100, 10]')
+    f.write('\nExpanded training data')
+    f.write('\nDropout')
+    model = models.Sequential([
+        layers.Conv2D(filters=20, kernel_size=(5, 5),
+                      activation='relu',
+                      kernel_regularizer=regularizers.l2(lmbda/(2*n))),
+        layers.MaxPooling2D(pool_size=(2, 2)),
+        layers.Conv2D(filters=40, kernel_size=(5, 5),
+                      activation='relu',
+                      kernel_regularizer=regularizers.l2(lmbda/(2*n))),
+        layers.MaxPooling2D(pool_size=(2, 2)),
+        layers.Flatten(),
+        layers.Dropout(rate=dropout),
+        layers.Dense(units=100, activation=ReLU_mod,
+                     kernel_regularizer=regularizers.l2(lmbda/(2*n))),
+        layers.Dropout(rate=dropout),
+        layers.Dense(units=100, activation=ReLU_mod,
+                     kernel_regularizer=regularizers.l2(lmbda/(2*n))),
+        layers.Dropout(rate=dropout),
+        layers.Dense(units=100, activation=ReLU_mod,
+                     kernel_regularizer=regularizers.l2(lmbda/(2*n))),
+        layers.Dense(10, activation='softmax')
+    ])
+
+    # Define optimizer and loss function
+    optimizer = tf.keras.optimizers.SGD(learning_rate=lr)
+    loss_fn = tf.keras.losses.SparseCategoricalCrossentropy()
+
+    # Compile the model
+    model.compile(optimizer=optimizer, loss=loss_fn, metrics=['accuracy'])
+
+    # Train the model
+    t_i = time.time()
+    model.fit(expanded_train_data, expanded_train_labels,
+              batch_size=mini_batch_size,
+              epochs=epochs, validation_data=(val_data, val_labels))
+    elapsed = time.time() - t_i
+
+    # Test the accuracy on test data
+    test_loss, test_accuracy = model.evaluate(test_data, test_labels)
+
+    print('Test Loss:', test_loss)
+    print('Test Accuracy:', test_accuracy)
+    print('Elapsed time: ' + str(elapsed) + ' s')
+    f.write('\nTest Loss: ' + str(test_loss))
+    f.write('\nTest Accuracy: ' + str(test_accuracy))
+    f.write('\nElapsed time: ' + str(elapsed) + ' s')
+
+
+# -----------------------------------------------------------------------------
+# # 10h network to train: 2 conv-pool + 4 FC layers with modified ReLU
+# # Expanding training data to 250.000. Include dropout
+if True:
+    n = expanded_train_labels.shape[0]
+    # Initialize
+    print('\n\n\n\n NEW CASE: Convolutional + Pool + '
+          'Convolutional + Pool + 4 FC Layers (ReLU_mod)')
+    print('Architecture: [784, 20x(24,24), 20x(12,12), '
+                                '100, 100, 100, 100, 10]')
+    print('Expanded training data')
+    print('Dropout')
+    f.write('\n\n\n\n\n NEW CASE: Convolutional + Pool + '
+            'Convolutional + Pool + 4 FC Layers (ReLU_mod)')
+    f.write('\nArchitecture: [784, 20x(24,24), 20x(12,12), '
+                                  '100, 100, 100, 100, 10]')
+    f.write('\nExpanded training data')
+    f.write('\nDropout')
+    model = models.Sequential([
+        layers.Conv2D(filters=20, kernel_size=(5, 5),
+                      activation='relu',
+                      kernel_regularizer=regularizers.l2(lmbda/(2*n))),
+        layers.MaxPooling2D(pool_size=(2, 2)),
+        layers.Conv2D(filters=40, kernel_size=(5, 5),
+                      activation='relu',
+                      kernel_regularizer=regularizers.l2(lmbda/(2*n))),
+        layers.MaxPooling2D(pool_size=(2, 2)),
+        layers.Flatten(),
+        layers.Dropout(rate=dropout),
+        layers.Dense(units=100, activation=ReLU_mod,
+                     kernel_regularizer=regularizers.l2(lmbda/(2*n))),
+        layers.Dropout(rate=dropout),
+        layers.Dense(units=100, activation=ReLU_mod,
+                     kernel_regularizer=regularizers.l2(lmbda/(2*n))),
+        layers.Dropout(rate=dropout),
+        layers.Dense(units=100, activation=ReLU_mod,
+                     kernel_regularizer=regularizers.l2(lmbda/(2*n))),
+        layers.Dropout(rate=dropout),
         layers.Dense(units=100, activation=ReLU_mod,
                      kernel_regularizer=regularizers.l2(lmbda/(2*n))),
         layers.Dense(10, activation='softmax')
