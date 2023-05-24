@@ -1,5 +1,6 @@
 import datetime
 import os
+import shutil
 import time
 import tensorflow as tf
 from tensorflow.keras import layers, models
@@ -12,14 +13,23 @@ from functions_deepnetwork import ReLU_mod
 
 # Identify the test (for saving results)
 current_time = datetime.datetime.now()
-id_test = current_time.strftime("%Y-%m-%d_%H-%M-%S")+'_deep'
+id_test = current_time.strftime("%Y-%m-%d_%H-%M-%S")
 
+if not os.path.exists('./tests/' + id_test):
+    os.makedirs('./tests/' + id_test)
+f = open('./tests/' + id_test + '/register.txt', 'w', newline='\r\n')
 
 # Set default parameters for training all examples
-epochs = 5
-mini_batch_size = 1000
+epochs = 60
+mini_batch_size = 10
 lr = 0.1
 lmbda = 5.0
+
+f.write('\nGENERAL SETTINGS')
+f.write('\nepochs: ' + str(epochs))
+f.write('\nmini_batch_size: ' + str(mini_batch_size))
+f.write('\nlr: ' + str(lr))
+f.write('\nlmbda: ' + str(lmbda))
 
 # Load MNIST data
 training_data, validation_data, test_data = load_data_shared()
@@ -48,11 +58,13 @@ expanded_train_labels = tf.convert_to_tensor(
 
 # -----------------------------------------------------------------------------
 # # 1st network to train: 1 hidden layer with 100 neurons:
-if False:
+if True:
     n = train_labels.shape[0]
     # Initialize the neural network model
     print('\n\n\n\n NEW CASE: 1 FullyConnected Layer')
     print('Architecture: [784, 100, 10]')
+    f.write('\n\n\n\n\n NEW CASE: 1 FullyConnected Layer')
+    f.write('\nArchitecture: [784, 100, 10]')
     model = models.Sequential([
         layers.Flatten(),
         layers.Dense(100, activation='sigmoid',
@@ -78,16 +90,21 @@ if False:
 
     print('Test Loss:', test_loss)
     print('Test Accuracy:', test_accuracy)
-    print('Elapsed time: ' + str(elapsed) + 's')
+    print('Elapsed time: ' + str(elapsed) + ' s')
+    f.write('\nTest Loss: ' + str(test_loss))
+    f.write('\nTest Accuracy: ' + str(test_accuracy))
+    f.write('\nElapsed time: ' + str(elapsed) + ' s')
 
 
 # -----------------------------------------------------------------------------
 # # 2nd network to train: 1 conv-pool + 1 FC layer
-if False:
+if True:
     n = train_labels.shape[0]
     # Initialize
     print('\n\n\n\n NEW CASE: Convolutional + Pool + FC Layer')
     print('Architecture: [784, 20x(24,24), 100, 10]')
+    f.write('\n\n\n\n\n NEW CASE: Convolutional + Pool + FC Layer')
+    f.write('\nArchitecture: [784, 20x(24,24), 100, 10]')
     model = models.Sequential([
         layers.Conv2D(filters=20, kernel_size=(5, 5),
                       activation='relu',
@@ -117,17 +134,23 @@ if False:
 
     print('Test Loss:', test_loss)
     print('Test Accuracy:', test_accuracy)
-    print('Elapsed time: ' + str(elapsed) + 's')
+    print('Elapsed time: ' + str(elapsed) + ' s')
+    f.write('\nTest Loss: ' + str(test_loss))
+    f.write('\nTest Accuracy: ' + str(test_accuracy))
+    f.write('\nElapsed time: ' + str(elapsed) + ' s')
 
 
 # -----------------------------------------------------------------------------
 # # 3rd network to train: 2 conv-pool + 1 FC layer
-if False:
+if True:
     n = train_labels.shape[0]
     # Initialize
     print('\n\n\n\n NEW CASE: Convolutional + Pool + '
                              'Convolutional + Pool + FC Layer')
     print('Architecture: [784, 20x(24,24), 20x(12,12), 100, 10]')
+    f.write('\n\n\n\n\n NEW CASE: Convolutional + Pool + '
+                             'Convolutional + Pool + FC Layer')
+    f.write('\nArchitecture: [784, 20x(24,24), 20x(12,12), 100, 10]')
     model = models.Sequential([
         layers.Conv2D(filters=20, kernel_size=(5, 5),
                       activation='relu',
@@ -161,17 +184,23 @@ if False:
 
     print('Test Loss:', test_loss)
     print('Test Accuracy:', test_accuracy)
-    print('Elapsed time: ' + str(elapsed) + 's')
+    print('Elapsed time: ' + str(elapsed) + ' s')
+    f.write('\nTest Loss: ' + str(test_loss))
+    f.write('\nTest Accuracy: ' + str(test_accuracy))
+    f.write('\nElapsed time: ' + str(elapsed) + ' s')
 
 
 # -----------------------------------------------------------------------------
 # # 4th network to train: 2 conv-pool + 1 FC layer with ReLU
-if False:
+if True:
     n = train_labels.shape[0]
     # Initialize
     print('\n\n\n\n NEW CASE: Convolutional + Pool + '
                              'Convolutional + Pool + FC Layer (ReLU)')
     print('Architecture: [784, 20x(24,24), 20x(12,12), 100, 10]')
+    f.write('\n\n\n\n\n NEW CASE: Convolutional + Pool + '
+                             'Convolutional + Pool + FC Layer (ReLU)')
+    f.write('\nArchitecture: [784, 20x(24,24), 20x(12,12), 100, 10]')
     model = models.Sequential([
         layers.Conv2D(filters=20, kernel_size=(5, 5),
                       activation='relu',
@@ -205,17 +234,23 @@ if False:
 
     print('Test Loss:', test_loss)
     print('Test Accuracy:', test_accuracy)
-    print('Elapsed time: ' + str(elapsed) + 's')
+    print('Elapsed time: ' + str(elapsed) + ' s')
+    f.write('\nTest Loss: ' + str(test_loss))
+    f.write('\nTest Accuracy: ' + str(test_accuracy))
+    f.write('\nElapsed time: ' + str(elapsed) + ' s')
 
 
 # -----------------------------------------------------------------------------
 # # 5th network to train: 2 conv-pool + 1 FC layer with modified ReLU
-if False:
+if True:
     n = train_labels.shape[0]
     # Initialize
     print('\n\n\n\n NEW CASE: Convolutional + Pool + '
                              'Convolutional + Pool + FC Layer (ReLU_mod)')
     print('Architecture: [784, 20x(24,24), 20x(12,12), 100, 10]')
+    f.write('\n\n\n\n\n NEW CASE: Convolutional + Pool + '
+                             'Convolutional + Pool + FC Layer (ReLU_mod)')
+    f.write('\nArchitecture: [784, 20x(24,24), 20x(12,12), 100, 10]')
     model = models.Sequential([
         layers.Conv2D(filters=20, kernel_size=(5, 5),
                       activation='relu',
@@ -249,19 +284,26 @@ if False:
 
     print('Test Loss:', test_loss)
     print('Test Accuracy:', test_accuracy)
-    print('Elapsed time: ' + str(elapsed) + 's')
+    print('Elapsed time: ' + str(elapsed) + ' s')
+    f.write('\nTest Loss: ' + str(test_loss))
+    f.write('\nTest Accuracy: ' + str(test_accuracy))
+    f.write('\nElapsed time: ' + str(elapsed) + ' s')
 
 
 # -----------------------------------------------------------------------------
 # # 6th network to train: 2 conv-pool + 1 FC layer with modified ReLU
 # # Expanding training data to 250.000
-if False:
+if True:
     n = expanded_train_labels.shape[0]
     # Initialize
     print('\n\n\n\n NEW CASE: Convolutional + Pool + '
                              'Convolutional + Pool + FC Layer')
     print('Architecture: [784, 20x(24,24), 20x(12,12), 100, 10]')
     print('Expanded training data')
+    f.write('\n\n\n\n\n NEW CASE: Convolutional + Pool + '
+                             'Convolutional + Pool + FC Layer')
+    f.write('\nArchitecture: [784, 20x(24,24), 20x(12,12), 100, 10]')
+    f.write('\nExpanded training data')
     model = models.Sequential([
         layers.Conv2D(filters=20, kernel_size=(5, 5),
                       activation='relu',
@@ -296,19 +338,26 @@ if False:
 
     print('Test Loss:', test_loss)
     print('Test Accuracy:', test_accuracy)
-    print('Elapsed time: ' + str(elapsed) + 's')
+    print('Elapsed time: ' + str(elapsed) + ' s')
+    f.write('\nTest Loss: ' + str(test_loss))
+    f.write('\nTest Accuracy: ' + str(test_accuracy))
+    f.write('\nElapsed time: ' + str(elapsed) + ' s')
 
 
 # -----------------------------------------------------------------------------
 # # 7th network to train: 2 conv-pool + 2 FC layers with modified ReLU
 # # Expanding training data to 250.000
-if False:
+if True:
     n = expanded_train_labels.shape[0]
     # Initialize
     print('\n\n\n\n NEW CASE: Convolutional + Pool + '
           'Convolutional + Pool + 2 FC Layers')
     print('Architecture: [784, 20x(24,24), 20x(12,12), 100, 100, 10]')
     print('Expanded training data')
+    f.write('\n\n\n\n\n NEW CASE: Convolutional + Pool + '
+           'Convolutional + Pool + 2 FC Layers')
+    f.write('\nArchitecture: [784, 20x(24,24), 20x(12,12), 100, 100, 10]')
+    f.write('\nExpanded training data')
     model = models.Sequential([
         layers.Conv2D(filters=20, kernel_size=(5, 5),
                       activation='relu',
@@ -345,7 +394,10 @@ if False:
 
     print('Test Loss:', test_loss)
     print('Test Accuracy:', test_accuracy)
-    print('Elapsed time: ' + str(elapsed) + 's')
+    print('Elapsed time: ' + str(elapsed) + ' s')
+    f.write('\nTest Loss: ' + str(test_loss))
+    f.write('\nTest Accuracy: ' + str(test_accuracy))
+    f.write('\nElapsed time: ' + str(elapsed) + ' s')
 
 
 # -----------------------------------------------------------------------------
@@ -358,6 +410,10 @@ if True:
           'Convolutional + Pool + 2 FC Layers')
     print('Architecture: [784, 20x(24,24), 20x(12,12), 100, 100, 10]')
     print('Expanded training data')
+    f.write('\n\n\n\n\n NEW CASE: Convolutional + Pool + '
+            'Convolutional + Pool + 2 FC Layers')
+    f.write('\nArchitecture: [784, 20x(24,24), 20x(12,12), 100, 100, 10]')
+    f.write('\nExpanded training data')
     model = models.Sequential([
         layers.Conv2D(filters=20, kernel_size=(5, 5),
                       activation='relu',
@@ -396,4 +452,12 @@ if True:
 
     print('Test Loss:', test_loss)
     print('Test Accuracy:', test_accuracy)
-    print('Elapsed time: ' + str(elapsed) + 's')
+    print('Elapsed time: ' + str(elapsed) + ' s')
+    f.write('\nTest Loss: ' + str(test_loss))
+    f.write('\nTest Accuracy: ' + str(test_accuracy))
+    f.write('\nElapsed time: ' + str(elapsed) + ' s')
+
+
+f.close()
+try:
+    shutil.copy('./console/log.txt', './tests/' + id_test + '/console_log.txt')
