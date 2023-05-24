@@ -299,11 +299,11 @@ if False:
     n = expanded_train_labels.shape[0]
     # Initialize
     print('\n\n\n\n NEW CASE: Convolutional + Pool + '
-          'Convolutional + Pool + FC Layer')
+          'Convolutional + Pool + FC Layer (ReLU_mod)')
     print('Architecture: [784, 20x(24,24), 20x(12,12), 100, 10]')
     print('Expanded training data')
     f.write('\n\n\n\n\n NEW CASE: Convolutional + Pool + '
-            'Convolutional + Pool + FC Layer')
+            'Convolutional + Pool + FC Layer (ReLU_mod)')
     f.write('\nArchitecture: [784, 20x(24,24), 20x(12,12), 100, 10]')
     f.write('\nExpanded training data')
     model = models.Sequential([
@@ -523,7 +523,7 @@ if False:
 # -----------------------------------------------------------------------------
 # # 8.1th network to train: 2 conv-pool + 2 FC layers with sigmoid
 # # Expanding training data to 250.000. Include dropout
-if False:
+if True:
     n = expanded_train_labels.shape[0]
     # Initialize
     print('\n\n\n\n NEW CASE: Convolutional + Pool + '
@@ -585,7 +585,7 @@ if False:
 # -----------------------------------------------------------------------------
 # # 8.2th network to train: 2 conv-pool + 2 FC layers with ReLU
 # # Expanding training data to 250.000. Include dropout
-if False:
+if True:
     n = expanded_train_labels.shape[0]
     # Initialize
     print('\n\n\n\n NEW CASE: Convolutional + Pool + '
@@ -647,7 +647,7 @@ if False:
 # -----------------------------------------------------------------------------
 # # 8.3th network to train: 2 conv-pool + 2 FC layers with modified ReLU
 # # Expanding training data to 250.000. Include dropout
-if False:
+if True:
     n = expanded_train_labels.shape[0]
     # Initialize
     print('\n\n\n\n NEW CASE: Convolutional + Pool + '
@@ -842,7 +842,7 @@ if False:
 # -----------------------------------------------------------------------------
 # # 11h network to train: 2 conv-pool + 5 FC layers with modified ReLU
 # # Expanding training data to 250.000. Include dropout
-if True:
+if False:
     n = expanded_train_labels.shape[0]
     # Initialize
     print('\n\n\n\n NEW CASE: Convolutional + Pool + '
