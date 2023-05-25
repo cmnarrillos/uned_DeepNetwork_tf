@@ -20,7 +20,7 @@ if not os.path.exists('./tests/' + id_test):
 f = open('./tests/' + id_test + '/register.txt', 'w', newline='\r\n')
 
 # Set default parameters for training all examples
-epochs = 20
+epochs = 100
 mini_batch_size = 100
 lr = 0.1
 lmbda = 5.0
@@ -60,7 +60,7 @@ expanded_train_labels = tf.convert_to_tensor(
 
 # -----------------------------------------------------------------------------
 # # 1st network to train: 1 hidden layer with 100 neurons:
-if False:
+if True:
     n = train_labels.shape[0]
     # Initialize the neural network model
     print('\n\n\n\n NEW CASE: 1 FullyConnected Layer')
@@ -100,7 +100,7 @@ if False:
 
 # -----------------------------------------------------------------------------
 # # 2nd network to train: 1 conv-pool + 1 FC layer
-if False:
+if True:
     n = train_labels.shape[0]
     # Initialize
     print('\n\n\n\n NEW CASE: Convolutional + Pool + FC Layer')
@@ -144,7 +144,7 @@ if False:
 
 # -----------------------------------------------------------------------------
 # # 3rd network to train: 2 conv-pool + 1 FC layer
-if False:
+if True:
     n = train_labels.shape[0]
     # Initialize
     print('\n\n\n\n NEW CASE: Convolutional + Pool + '
@@ -194,7 +194,7 @@ if False:
 
 # -----------------------------------------------------------------------------
 # # 4th network to train: 2 conv-pool + 1 FC layer with ReLU
-if False:
+if True:
     n = train_labels.shape[0]
     # Initialize
     print('\n\n\n\n NEW CASE: Convolutional + Pool + '
@@ -244,7 +244,7 @@ if False:
 
 # -----------------------------------------------------------------------------
 # # 5th network to train: 2 conv-pool + 1 FC layer with modified ReLU
-if False:
+if True:
     n = train_labels.shape[0]
     # Initialize
     print('\n\n\n\n NEW CASE: Convolutional + Pool + '
@@ -295,7 +295,7 @@ if False:
 # -----------------------------------------------------------------------------
 # # 6th network to train: 2 conv-pool + 1 FC layer with modified ReLU
 # # Expanding training data to 250.000
-if False:
+if True:
     n = expanded_train_labels.shape[0]
     # Initialize
     print('\n\n\n\n NEW CASE: Convolutional + Pool + '
@@ -349,7 +349,7 @@ if False:
 # -----------------------------------------------------------------------------
 # # 7.1th network to train: 2 conv-pool + 2 FC layers with sigmoid
 # # Expanding training data to 250.000
-if False:
+if True:
     n = expanded_train_labels.shape[0]
     # Initialize
     print('\n\n\n\n NEW CASE: Convolutional + Pool + '
@@ -407,7 +407,7 @@ if False:
 # -----------------------------------------------------------------------------
 # # 7.2th network to train: 2 conv-pool + 2 FC layers with ReLU
 # # Expanding training data to 250.000
-if False:
+if True:
     n = expanded_train_labels.shape[0]
     # Initialize
     print('\n\n\n\n NEW CASE: Convolutional + Pool + '
@@ -465,7 +465,7 @@ if False:
 # -----------------------------------------------------------------------------
 # # 7.3th network to train: 2 conv-pool + 2 FC layers with modified ReLU
 # # Expanding training data to 250.000
-if False:
+if True:
     n = expanded_train_labels.shape[0]
     # Initialize
     print('\n\n\n\n NEW CASE: Convolutional + Pool + '
@@ -709,7 +709,7 @@ if True:
 # -----------------------------------------------------------------------------
 # # 9th network to train: 2 conv-pool + 3 FC layers with modified ReLU
 # # Expanding training data to 250.000. Include dropout
-if False:
+if True:
     n = expanded_train_labels.shape[0]
     # Initialize
     print('\n\n\n\n NEW CASE: Convolutional + Pool + '
@@ -774,7 +774,7 @@ if False:
 # -----------------------------------------------------------------------------
 # # 10h network to train: 2 conv-pool + 4 FC layers with modified ReLU
 # # Expanding training data to 250.000. Include dropout
-if False:
+if True:
     n = expanded_train_labels.shape[0]
     # Initialize
     print('\n\n\n\n NEW CASE: Convolutional + Pool + '
@@ -842,7 +842,7 @@ if False:
 # -----------------------------------------------------------------------------
 # # 11h network to train: 2 conv-pool + 5 FC layers with modified ReLU
 # # Expanding training data to 250.000. Include dropout
-if False:
+if True:
     n = expanded_train_labels.shape[0]
     # Initialize
     print('\n\n\n\n NEW CASE: Convolutional + Pool + '
