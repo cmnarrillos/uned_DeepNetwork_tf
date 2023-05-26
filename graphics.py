@@ -59,6 +59,7 @@ for root, dirs, files in os.walk(folder_path):
         plt.ylabel('Validation Accuracy')
         plt.title('Validation Accuracy for Different Models')
         plt.legend()
+        plt.grid('minor')
 
         # Save the figure
         plt.savefig('./tests/' + test_to_analyze + '/validation_acc.png',
@@ -74,6 +75,7 @@ for root, dirs, files in os.walk(folder_path):
             plt.ylabel('Validation Accuracy')
             plt.title('Validation Accuracy for Different Models')
             plt.legend()
+            plt.grid('minor')
 
             # Save the figure
             plt.savefig('./tests/' + test_to_analyze +
