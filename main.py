@@ -149,10 +149,10 @@ if True:
     # Initialize
     print('\n\n\n\n NEW CASE: Convolutional + Pool + '
           'Convolutional + Pool + FC Layer')
-    print('Architecture: [784, 20x(24,24), 20x(12,12), 100, 10]')
+    print('Architecture: [784, 20x(24,24), 40x(12,12), 100, 10]')
     f.write('\n\n\n\n\n NEW CASE: Convolutional + Pool + '
             'Convolutional + Pool + FC Layer')
-    f.write('\nArchitecture: [784, 20x(24,24), 20x(12,12), 100, 10]')
+    f.write('\nArchitecture: [784, 20x(24,24), 40x(12,12), 100, 10]')
     model = models.Sequential([
         layers.Conv2D(filters=20, kernel_size=(5, 5),
                       activation='relu',
@@ -199,10 +199,10 @@ if True:
     # Initialize
     print('\n\n\n\n NEW CASE: Convolutional + Pool + '
           'Convolutional + Pool + FC Layer (ReLU)')
-    print('Architecture: [784, 20x(24,24), 20x(12,12), 100, 10]')
+    print('Architecture: [784, 20x(24,24), 40x(12,12), 100, 10]')
     f.write('\n\n\n\n\n NEW CASE: Convolutional + Pool + '
             'Convolutional + Pool + FC Layer (ReLU)')
-    f.write('\nArchitecture: [784, 20x(24,24), 20x(12,12), 100, 10]')
+    f.write('\nArchitecture: [784, 20x(24,24), 40x(12,12), 100, 10]')
     model = models.Sequential([
         layers.Conv2D(filters=20, kernel_size=(5, 5),
                       activation='relu',
@@ -249,10 +249,10 @@ if True:
     # Initialize
     print('\n\n\n\n NEW CASE: Convolutional + Pool + '
           'Convolutional + Pool + FC Layer (ReLU_mod)')
-    print('Architecture: [784, 20x(24,24), 20x(12,12), 100, 10]')
+    print('Architecture: [784, 20x(24,24), 40x(12,12), 100, 10]')
     f.write('\n\n\n\n\n NEW CASE: Convolutional + Pool + '
             'Convolutional + Pool + FC Layer (ReLU_mod)')
-    f.write('\nArchitecture: [784, 20x(24,24), 20x(12,12), 100, 10]')
+    f.write('\nArchitecture: [784, 20x(24,24), 40x(12,12), 100, 10]')
     model = models.Sequential([
         layers.Conv2D(filters=20, kernel_size=(5, 5),
                       activation='relu',
@@ -300,11 +300,11 @@ if True:
     # Initialize
     print('\n\n\n\n NEW CASE: Convolutional + Pool + '
           'Convolutional + Pool + FC Layer (ReLU_mod)')
-    print('Architecture: [784, 20x(24,24), 20x(12,12), 100, 10]')
+    print('Architecture: [784, 20x(24,24), 40x(12,12), 100, 10]')
     print('Expanded training data')
     f.write('\n\n\n\n\n NEW CASE: Convolutional + Pool + '
             'Convolutional + Pool + FC Layer (ReLU_mod)')
-    f.write('\nArchitecture: [784, 20x(24,24), 20x(12,12), 100, 10]')
+    f.write('\nArchitecture: [784, 20x(24,24), 40x(12,12), 100, 10]')
     f.write('\nExpanded training data')
     model = models.Sequential([
         layers.Conv2D(filters=20, kernel_size=(5, 5),
@@ -354,12 +354,12 @@ if True:
     # Initialize
     print('\n\n\n\n NEW CASE: Convolutional + Pool + '
           'Convolutional + Pool + 2 FC Layers (sigmoid)')
-    print('Architecture: [784, 20x(24,24), 20x(12,12), '
+    print('Architecture: [784, 20x(24,24), 40x(12,12), '
                                          '100, 100, 10]')
     print('Expanded training data')
     f.write('\n\n\n\n\n NEW CASE: Convolutional + Pool + '
             'Convolutional + Pool + 2 FC Layers (sigmoid)')
-    f.write('\nArchitecture: [784, 20x(24,24), 20x(12,12), '
+    f.write('\nArchitecture: [784, 20x(24,24), 40x(12,12), '
                                              '100, 100, 10]')
     f.write('\nExpanded training data')
     model = models.Sequential([
@@ -412,12 +412,12 @@ if True:
     # Initialize
     print('\n\n\n\n NEW CASE: Convolutional + Pool + '
           'Convolutional + Pool + 2 FC Layers (ReLU)')
-    print('Architecture: [784, 20x(24,24), 20x(12,12), '
+    print('Architecture: [784, 20x(24,24), 40x(12,12), '
                                          '100, 100, 10]')
     print('Expanded training data')
     f.write('\n\n\n\n\n NEW CASE: Convolutional + Pool + '
             'Convolutional + Pool + 2 FC Layers (ReLU)')
-    f.write('\nArchitecture: [784, 20x(24,24), 20x(12,12), '
+    f.write('\nArchitecture: [784, 20x(24,24), 40x(12,12), '
                                              '100, 100, 10]')
     f.write('\nExpanded training data')
     model = models.Sequential([
@@ -470,12 +470,12 @@ if True:
     # Initialize
     print('\n\n\n\n NEW CASE: Convolutional + Pool + '
           'Convolutional + Pool + 2 FC Layers (ReLU_mod)')
-    print('Architecture: [784, 20x(24,24), 20x(12,12), '
+    print('Architecture: [784, 20x(24,24), 40x(12,12), '
                                           '100, 100, 10]')
     print('Expanded training data')
     f.write('\n\n\n\n\n NEW CASE: Convolutional + Pool + '
             'Convolutional + Pool + 2 FC Layers (ReLU_mod)')
-    f.write('\nArchitecture: [784, 20x(24,24), 20x(12,12), '
+    f.write('\nArchitecture: [784, 20x(24,24), 40x(12,12), '
                                             '100, 100, 10]')
     f.write('\nExpanded training data')
     model = models.Sequential([
@@ -528,13 +528,13 @@ if True:
     # Initialize
     print('\n\n\n\n NEW CASE: Convolutional + Pool + '
           'Convolutional + Pool + 2 FC Layers (ReLU_mod)')
-    print('Architecture: [784, 20x(24,24), 20x(12,12), '
+    print('Architecture: [784, 20x(24,24), 40x(12,12), '
                                           '100, 100, 10]')
     print('Expanded training data')
     print('Dropout')
     f.write('\n\n\n\n\n NEW CASE: Convolutional + Pool + '
             'Convolutional + Pool + 2 FC Layers (ReLU_mod)')
-    f.write('\nArchitecture: [784, 20x(24,24), 20x(12,12), '
+    f.write('\nArchitecture: [784, 20x(24,24), 40x(12,12), '
                                             '100, 100, 10]')
     f.write('\nExpanded training data')
     f.write('\nDropout')
@@ -590,13 +590,13 @@ if True:
     # Initialize
     print('\n\n\n\n NEW CASE: Convolutional + Pool + '
           'Convolutional + Pool + 2 FC Layers (ReLU)')
-    print('Architecture: [784, 20x(24,24), 20x(12,12), '
+    print('Architecture: [784, 20x(24,24), 40x(12,12), '
                                          '100, 100, 10]')
     print('Expanded training data')
     print('Dropout')
     f.write('\n\n\n\n\n NEW CASE: Convolutional + Pool + '
             'Convolutional + Pool + 2 FC Layers (ReLU)')
-    f.write('\nArchitecture: [784, 20x(24,24), 20x(12,12), '
+    f.write('\nArchitecture: [784, 20x(24,24), 40x(12,12), '
                                             '100, 100, 10]')
     f.write('\nExpanded training data')
     f.write('\nDropout')
@@ -652,13 +652,13 @@ if True:
     # Initialize
     print('\n\n\n\n NEW CASE: Convolutional + Pool + '
           'Convolutional + Pool + 2 FC Layers (ReLU_mod)')
-    print('Architecture: [784, 20x(24,24), 20x(12,12), '
+    print('Architecture: [784, 20x(24,24), 40x(12,12), '
                                           '100, 100, 10]')
     print('Expanded training data')
     print('Dropout')
     f.write('\n\n\n\n\n NEW CASE: Convolutional + Pool + '
             'Convolutional + Pool + 2 FC Layers (ReLU_mod)')
-    f.write('\nArchitecture: [784, 20x(24,24), 20x(12,12), '
+    f.write('\nArchitecture: [784, 20x(24,24), 40x(12,12), '
                                             '100, 100, 10]')
     f.write('\nExpanded training data')
     f.write('\nDropout')
@@ -714,13 +714,13 @@ if True:
     # Initialize
     print('\n\n\n\n NEW CASE: Convolutional + Pool + '
           'Convolutional + Pool + 3 FC Layers (ReLU_mod)')
-    print('Architecture: [784, 20x(24,24), 20x(12,12), '
+    print('Architecture: [784, 20x(24,24), 40x(12,12), '
                                      '100, 100, 100, 10]')
     print('Expanded training data')
     print('Dropout')
     f.write('\n\n\n\n\n NEW CASE: Convolutional + Pool + '
             'Convolutional + Pool + 3 FC Layers (ReLU_mod)')
-    f.write('\nArchitecture: [784, 20x(24,24), 20x(12,12), '
+    f.write('\nArchitecture: [784, 20x(24,24), 40x(12,12), '
                                        '100, 100, 100, 10]')
     f.write('\nExpanded training data')
     f.write('\nDropout')
@@ -779,13 +779,13 @@ if True:
     # Initialize
     print('\n\n\n\n NEW CASE: Convolutional + Pool + '
           'Convolutional + Pool + 4 FC Layers (ReLU_mod)')
-    print('Architecture: [784, 20x(24,24), 20x(12,12), '
+    print('Architecture: [784, 20x(24,24), 40x(12,12), '
                                 '100, 100, 100, 100, 10]')
     print('Expanded training data')
     print('Dropout')
     f.write('\n\n\n\n\n NEW CASE: Convolutional + Pool + '
             'Convolutional + Pool + 4 FC Layers (ReLU_mod)')
-    f.write('\nArchitecture: [784, 20x(24,24), 20x(12,12), '
+    f.write('\nArchitecture: [784, 20x(24,24), 40x(12,12), '
                                   '100, 100, 100, 100, 10]')
     f.write('\nExpanded training data')
     f.write('\nDropout')
@@ -847,13 +847,13 @@ if True:
     # Initialize
     print('\n\n\n\n NEW CASE: Convolutional + Pool + '
           'Convolutional + Pool + 5 FC Layers (ReLU_mod)')
-    print('Architecture: [784, 20x(24,24), 20x(12,12), '
+    print('Architecture: [784, 20x(24,24), 40x(12,12), '
                            '100, 100, 100, 100, 100, 10]')
     print('Expanded training data')
     print('Dropout')
     f.write('\n\n\n\n\n NEW CASE: Convolutional + Pool + '
             'Convolutional + Pool + 5 FC Layers (ReLU_mod)')
-    f.write('\nArchitecture: [784, 20x(24,24), 20x(12,12), '
+    f.write('\nArchitecture: [784, 20x(24,24), 40x(12,12), '
                               '100, 100, 100, 100, 100, 10]')
     f.write('\nExpanded training data')
     f.write('\nDropout')
