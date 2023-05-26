@@ -69,7 +69,7 @@ for root, dirs, files in os.walk(folder_path):
             # Set the figure size
             fig, ax = plt.subplots(figsize=(8, 6))
             # Plotting
-            for i in range(len(models[:-2])):
+            for i in range(len(models[:-1])):
                 plt.plot(val_acc_np[i], label=models[i])
             plt.xlabel('Epochs')
             plt.ylabel('Validation Accuracy')
